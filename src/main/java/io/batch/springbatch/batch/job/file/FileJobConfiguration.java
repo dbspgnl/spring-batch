@@ -49,7 +49,7 @@ public class FileJobConfiguration {
 
     @Bean
     @StepScope
-    public FlatFileItemReader<ProductVO> fileItemReader(
+    public FlatFileItemReader<ProductVO> fileItemReader( // FlatFile은 csv 같은 파일을 파싱
         @Value("#{jobParameters['requestDate']}") String requestDate
     ) {
         return new FlatFileItemReaderBuilder<ProductVO>()
