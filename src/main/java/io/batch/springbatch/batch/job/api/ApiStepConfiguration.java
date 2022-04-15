@@ -26,19 +26,35 @@ import io.batch.springbatch.batch.chunk.processor.ApiItemProcessor1;
 import io.batch.springbatch.batch.chunk.processor.ApiItemProcessor2;
 import io.batch.springbatch.batch.chunk.processor.ApiItemProcessor3;
 import io.batch.springbatch.batch.chunk.writer.ApiItemWriter1;
+import io.batch.springbatch.batch.chunk.writer.ApiItemWriter2;
+import io.batch.springbatch.batch.chunk.writer.ApiItemWriter3;
 import io.batch.springbatch.batch.classifier.ProcessorClassifier;
 import io.batch.springbatch.batch.classifier.WriterClassifier;
 import io.batch.springbatch.batch.model.dto.ApiRequestVO;
 import io.batch.springbatch.batch.model.dto.ProductVO;
 import io.batch.springbatch.batch.partition.ProductPartitioner;
+import io.batch.springbatch.service.ApiService1;
+import io.batch.springbatch.service.ApiService2;
+import io.batch.springbatch.service.ApiService3;
 import lombok.RequiredArgsConstructor;
 
 @Configuration
 @RequiredArgsConstructor
 public class ApiStepConfiguration {
+
+    /*
+        // 인자값 정의
+        "args": [
+            "job.name=apiJob",
+            "requestDate=20210102"
+        ]
+    */
     
     private final StepBuilderFactory stepBuilderFactory;
     private final DataSource dataSource;
+    private final ApiService1 apiService1;
+    private final ApiService2 apiService2;
+    private final ApiService3 apiService3;
 
     private int chunkSize = 10;
 
@@ -78,7 +94,7 @@ public class ApiStepConfiguration {
         JdbcPagingItemReader<ProductVO> reader = new JdbcPagingItemReader<>(); // ItemReader 설정
         reader.setDataSource(dataSource);
         reader.setPageSize(chunkSize);
-        reader.setRowMapper(new BeanPropertyRowMapper(ProductVO.class));
+        reader.setRowMapper(new BeanPropertyRowMapper<>(ProductVO.class));
 
         MySqlPagingQueryProvider queryProvider = new MySqlPagingQueryProvider(); // 쿼리문 작성
         queryProvider.setSelectClause("id, name, price, type");
@@ -130,9 +146,9 @@ public class ApiStepConfiguration {
         ClassifierCompositeItemWriter<ApiRequestVO> writer = new ClassifierCompositeItemWriter<>();
         WriterClassifier<ApiRequestVO, ItemWriter<? super ApiRequestVO>> classifier = new WriterClassifier<>();
         Map<String, ItemWriter<ApiRequestVO>> writerMap = new HashMap<>();
-        writerMap.put("1", new ApiItemWriter1());
-        writerMap.put("2", new ApiItemWriter1());
-        writerMap.put("3", new ApiItemWriter1());
+        writerMap.put("1", new ApiItemWriter1(apiService1));
+        writerMap.put("2", new ApiItemWriter2(apiService2));
+        writerMap.put("3", new ApiItemWriter3(apiService3));
 
         classifier.setWriterMap(writerMap);
         writer.setClassifier(classifier);

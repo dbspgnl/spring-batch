@@ -8,11 +8,11 @@ import io.batch.springbatch.batch.model.dto.ApiRequestVO;
 import io.batch.springbatch.batch.model.dto.ApiResponseVO;
 import io.batch.springbatch.service.AbstractApiService;
 
-public class ApiItemWriter1 implements ItemWriter<ApiRequestVO> {
+public class ApiItemWriter3 implements ItemWriter<ApiRequestVO> {
 
     private final AbstractApiService apiService;
     
-    public ApiItemWriter1(AbstractApiService apiService) {
+    public ApiItemWriter3(AbstractApiService apiService) {
         this.apiService = apiService;
     }
 

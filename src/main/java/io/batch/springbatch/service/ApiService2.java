@@ -8,12 +8,12 @@ import io.batch.springbatch.batch.model.domain.ApiInfo;
 import io.batch.springbatch.batch.model.dto.ApiResponseVO;
 
 @Service
-public class ApiService1 extends AbstractApiService{
+public class ApiService2 extends AbstractApiService{
 
     @Override
     protected ApiResponseVO doApiService(RestTemplate restTemplate, ApiInfo apiInfo) {
         
-        ResponseEntity<String> responseEntity = restTemplate.postForEntity("http://localhost:8081/api/product/1", apiInfo, String.class);
+        ResponseEntity<String> responseEntity = restTemplate.postForEntity("http://localhost:8082/api/product/2", apiInfo, String.class);
         int statusCodeValue = responseEntity.getStatusCodeValue();
         ApiResponseVO apiResponseVO = ApiResponseVO.builder().status(statusCodeValue).msg(responseEntity.getBody()).build();
         
