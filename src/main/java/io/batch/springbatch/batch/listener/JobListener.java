@@ -6,15 +6,14 @@ import org.springframework.batch.core.JobExecutionListener;
 public class JobListener implements JobExecutionListener{
 
     @Override
-    public void afterJob(JobExecution arg0) {
-        // TODO Auto-generated method stub
+    public void beforeJob(JobExecution jobExecution) {
         
     }
 
     @Override
-    public void beforeJob(JobExecution arg0) {
-        // TODO Auto-generated method stub
-        
+    public void afterJob(JobExecution jobExecution) {
+        long time = jobExecution.getEndTime().getTime() - jobExecution.getStartTime().getTime();
+        System.out.println("총 소요시간 = "+time);
     }
-    
+
 }
